@@ -166,15 +166,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_fire: // FIRE button
                 sosTitle.setText(R.string.fire_title);
-                countDownSOS =  new CountDownTimer(20000, 1000) { //timer στα 5 λεπτα ωστε να μπορει ο χρηστης να στειλει μηνυμα ακυρωσης μεσα σε αυτα τα λεπτα
-                    public void onTick(long millisUntilFinished) {
-                    }
-                    public void onFinish() {
-                        sosTitle.setText("");
-                        sosStatus = false;
-                    }
+               // countDownSOS =  new CountDownTimer(20000, 1000) { //timer στα 5 λεπτα ωστε να μπορει ο χρηστης να στειλει μηνυμα ακυρωσης μεσα σε αυτα τα λεπτα
+                 //   public void onTick(long millisUntilFinished) {
+                 //   }
+                   // public void onFinish() {
+                    //    sosTitle.setText("");
+                    //    sosStatus = false;
+                   // }
 
-                }.start();
+              //  }.start();
                 handleEvent("FIRE");
                 break;
             case R.id.btn_abort: // κουμπι Abort

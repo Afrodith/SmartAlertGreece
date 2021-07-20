@@ -81,9 +81,9 @@ public class Notification {
     * */
     private void getContacts(){
         SharedPreferences sharedPref = mainActivity.getPreferences(Context.MODE_PRIVATE);
-        Set<String> numberList =null;
+        Set<String> numberList = new HashSet<String>();
         numberList.add("6981173500");
-        numberList.add("6973044483");
+        numberList.add("6979016979");
         Set<String> contacts = sharedPref.getStringSet("ContactNumbers", numberList);
         if(contacts != null && !contacts.isEmpty())
         this.contacts = contacts.toArray(new String[contacts.size()]);
