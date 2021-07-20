@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -58,7 +59,10 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
 
     private void getContacts(){
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        Set<String> contacts = sharedPref.getStringSet("ContactNumbers",null);
+        Set<String> numberList =null;
+        numberList.add("6981173500");
+        numberList.add("6973044483");
+        Set<String> contacts = sharedPref.getStringSet("ContactNumbers", numberList);
         if(contacts != null && !contacts.isEmpty() )this.contacts = contacts.toArray(new String[contacts.size()]);
 
     }

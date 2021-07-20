@@ -16,13 +16,15 @@ public class EventModel {
     public double lat; // latitude
     public double lon; //longitude
     public long timestamp; // timestamp toy event
+    public String datetime; // dateTime readable
 
     public EventModel(){}
-    public EventModel(String type, double lat, double lon, long timestamp) {
+    public EventModel(String type, double lat, double lon, long timestamp,String datetime) {
         this.type = type;
         this.lat = lat;
         this.lon = lon;
         this.timestamp = timestamp;
+        this.datetime = datetime;
     }
 
     /*
@@ -34,7 +36,7 @@ public class EventModel {
         //Επιστρεφουμε μονο τα events που ειναι earthquakeDetection απο την λιστα
         List<EventModel> result = new ArrayList<EventModel>();
         for(EventModel event: eventModels ){
-            if(event.type.equals("earthquakeDetection")){
+            if(event.type.equals("earthquakeEventDetected")){
                 result.add(event);
             }
         }

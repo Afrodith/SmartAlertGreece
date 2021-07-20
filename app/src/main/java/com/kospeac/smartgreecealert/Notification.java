@@ -12,6 +12,7 @@ import android.widget.Toast;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -57,8 +58,12 @@ public class Notification {
     private String getMessage(String notificationType,String lat,String lon, String time){
         String type ="";
         if(notificationType == "SOS"){
-            textToSpeech();
+            textToSpeech(notificationType);
             type = mainActivity.getResources().getString(R.string.typeSOS);
+        }else if(notificationType == "FIRE"){
+            textToSpeech(notificationType);
+            type = mainActivity.getResources().getString(R.string.typeFire);
+            return type + ". " + mainActivity.getResources().getString(R.string.helpMsgFire,lat,lon,time);
         }else if(notificationType == "fallDetection"){
             type = mainActivity.getResources().getString(R.string.typeFall);
         }else if(notificationType == "AbortSOS"){
@@ -67,6 +72,7 @@ public class Notification {
         }
 
         return type + ". " + mainActivity.getResources().getString(R.string.helpMsg,lat,lon,time);
+
     }
 
 
@@ -75,7 +81,10 @@ public class Notification {
     * */
     private void getContacts(){
         SharedPreferences sharedPref = mainActivity.getPreferences(Context.MODE_PRIVATE);
-        Set<String> contacts = sharedPref.getStringSet("ContactNumbers",null);
+        Set<String> numberList =null;
+        numberList.add("6981173500");
+        numberList.add("6973044483");
+        Set<String> contacts = sharedPref.getStringSet("ContactNumbers", numberList);
         if(contacts != null && !contacts.isEmpty())
         this.contacts = contacts.toArray(new String[contacts.size()]);
 
@@ -101,14 +110,20 @@ public class Notification {
     /* textToSpeech
     * Εκφωνιση περιεχομενου μηνυματος
     *  */
-    private void textToSpeech(){
+    private void textToSpeech(final String notificationType){
         final Handler handler = new Handler();
         tts = new Speech(mainActivity.getApplicationContext());
         for(int i=1; i<=3; i++){
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    tts.speak("Help me, i'm in danger!");
+                    if(notificationType ==  "SOS") {
+                        tts.speak("Help me, i'm in danger!");
+                    }
+                    else if(notificationType == "FIRE")
+                    {
+                        tts.speak("Help me,there is a fire near me!");
+                    }
                 }
             }, 2000 * i);
         }

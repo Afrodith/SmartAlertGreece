@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseService mFirebaseService;
     String type;
     Button sosBtn;
+    Button fireBtn;
     Button abortBtn;
     public TextView mainTitle;
     public TextView sosTitle;
@@ -77,10 +78,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         locationService = new LocationService();
 
         sosBtn = findViewById(R.id.btn_sos);
+        fireBtn = findViewById(R.id.btn_fire);
         abortBtn = findViewById(R.id.btn_abort);
         mainTitle = findViewById(R.id.main_title);
         sosTitle = findViewById(R.id.sos_text);
         sosBtn.setOnClickListener(this);
+        fireBtn.setOnClickListener(this);
         abortBtn.setOnClickListener(this);
         checkPermissions(); //ελεγχος για permission συσκευης
 
@@ -106,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //κατασταση εντοπισμος σεισμου
                     if(prevStatus == null || prevStatus != newStatus ) { //Ελεγχος της προηγουμενης καταστασης ετσι ωστε να μην γινει εγγραφη σε listener 2 φορες
                         prevStatus = newStatus;
-                        type = "earthquakeDetection";
+                        type = "earthquakeEventDetected";
                         if (falldetection != null && FallDetectionHandler.getListenerStatus()) { // ελεγχος οτι αν υπαρχει ενεργος listener της αλλης λειτουργιας
                             falldetection.unregisterListener(); // αμα υπαρχει γινεται unregister του listener ωστε να ειναι ενεργος μονο ενας listener καθε φορα αναλογα την λειτουργια
                         }
@@ -117,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //κατασταση εντοπισμος πτωσεων χρηστη
                     if(prevStatus == null || prevStatus != newStatus ) {
                         prevStatus = newStatus;
-                        type = "fallDetection";
+                        type = "fallDetectionEvent";
                         if (seismicdetection != null && SeismicDetectionHandler.getListenerStatus()) {
                             System.out.println(seismicdetection);
                             seismicdetection.unregisterListener();
@@ -150,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_sos: // κουμπι SOS
                 sosStatus = true;
                 sosTitle.setText(R.string.sos_title);
-                countDownSOS =  new CountDownTimer(300000, 1000) { //timer στα 5 λεπτα ωστε να μπορει ο χρηστης να στειλει μηνυμα ακυρωσης μεσα σε αυτα τα λεπτα
+                countDownSOS =  new CountDownTimer(20000, 1000) { //timer στα 5 λεπτα ωστε να μπορει ο χρηστης να στειλει μηνυμα ακυρωσης μεσα σε αυτα τα λεπτα
                     public void onTick(long millisUntilFinished) {
                     }
                     public void onFinish() {
@@ -161,15 +164,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }.start();
                 handleEvent("SOS");
                 break;
+            case R.id.btn_fire: // FIRE button
+                sosTitle.setText(R.string.fire_title);
+                countDownSOS =  new CountDownTimer(20000, 1000) { //timer στα 5 λεπτα ωστε να μπορει ο χρηστης να στειλει μηνυμα ακυρωσης μεσα σε αυτα τα λεπτα
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        sosTitle.setText("");
+                        sosStatus = false;
+                    }
+
+                }.start();
+                handleEvent("FIRE");
+                break;
             case R.id.btn_abort: // κουμπι Abort
-                if(type == "fallDetection" && countDownTimerIsRunning) { // σε περιπτωση που ο timer του fallDetection ειναι ενεργος τοτε το κουμπι abort ακυρωνει τον συναγερμο πτωσης
+                if(type == "fallDetectionEvent" && countDownTimerIsRunning) { // σε περιπτωση που ο timer του fallDetection ειναι ενεργος τοτε το κουμπι abort ακυρωνει τον συναγερμο πτωσης
                     cancelTimer();
                     Toast.makeText(this, "Aborted", Toast.LENGTH_LONG).show();
                     mainTitle.setText(R.string.main_title1);
                     falldetection.registerListener();
                 } else if(sosStatus){ // αμα το sosStatus ειναι ενεργο δηλαδη εχει πατηθει το SOS button και δεν εχουν περασει τα 5 λεπτα που εχει ο χρηστης για να κανει ακυρωση
                     cancelSOSTimer();
-                    handleEvent("AbortSOS");
+                    handleEvent("AbortEvent");
                 }
                 break;
         }
@@ -302,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             r.stop();
                             mainTitle.setText(R.string.main_title1);
                             falldetection.registerListener();
-                            handleEvent("fallDetection");
+                            handleEvent("fallDetectionEvent");
                         }
 
                     }.start();
@@ -332,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onStatusChanged(boolean seismicDetectionStatus) {
                 if(seismicDetectionStatus) {
                     seismicdetection.unregisterListener(); // Κανουμε unregistrer τον listener μεχρι να γινει η καταγραφη στην βαση και να δουμε αν ειναι οντως σεισμος
-                    handleEvent("earthquakeDetection"); //καταγραφουμε στην βαση με type earthquakeDetection ωστε να κανουμε αναζητηση και σε αλλους χρηστες με το ιδιο type
+                    handleEvent("earthquakeEventDetected"); //καταγραφουμε στην βαση με type earthquakeDetection ωστε να κανουμε αναζητηση και σε αλλους χρηστες με το ιδιο type
                 }
             }
         });
@@ -364,13 +380,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cal.setTimeInMillis(timestamp);
         String date = DateFormat.format("dd-MM-yyyy HH:mm", cal).toString();
 
-        mFirebaseService.insertEvent(new EventModel(eventType, latd,lond,timestamp)); // Εγγραφη στην Firebase Database
-        if((eventType != "earthquakeDetection") && (eventType != "earthquake")) { //Στελνουμε μηνυμα σε καθε περιπτωση εκτος απο την περιπτωση της ανιχνευσης σεισμου
+        mFirebaseService.insertEvent(new EventModel(eventType, latd,lond,timestamp,date)); // Εγγραφη στην Firebase Database
+        if((eventType != "earthquakeEventDetected") && (eventType != "earthquakeTakingPlace")) { //Στελνουμε μηνυμα σε καθε περιπτωση εκτος απο την περιπτωση της ανιχνευσης σεισμου
             Notification notification = new Notification(mainActivity);
             notification.sendNotification(type, lat, lon, date); // αποστολη SMS
         }
 
-        if(eventType == "earthquakeDetection"){ // Στην περιπτωση που εχουμε ανιχνευση σεισμου, γινεται ελεγχος της βασης για να βρεθει και αλλος χρηστης σε κοντινη αποσταση που ειχε ιδιο event
+        if(eventType == "earthquakeEventDetected"){ // Στην περιπτωση που εχουμε ανιχνευση σεισμου, γινεται ελεγχος της βασης για να βρεθει και αλλος χρηστης σε κοντινη αποσταση που ειχε ιδιο event
             mFirebaseService.getEvents();
             mFirebaseService.setFirebaseListener(new FirebaseListener() {
                 @Override
@@ -379,10 +395,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         List<EventModel> events = EventModel.filterEarthquakeDetectionEvents(mFirebaseService.eventsList); //φιλτρουμε απο ολα τα events μονο τα earthquakedetection
                         boolean seismicStatus = seismicdetection.seismicStatus(events, timestamp,latd,lond);
                         if(seismicStatus){
-                            handleEvent("earthquake"); // εγγραφη του event στην βαση
+                            handleEvent("earthquakeTakingPlace"); // εγγραφη του event στην βαση
                             new AlertDialog.Builder(MainActivity.mainActivity) // ειδοποιση χρηστη και και ενεργοποιηση του listener otan πατησει το οκ
-                                    .setTitle("Earthquake")
-                                    .setMessage("An Earthquake has been detected")
+                                    .setTitle("Earthquake!")
+                                    .setMessage("An Earthquake is taking place, please seek help!!")
                                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
                                             if( FallDetectionHandler.getListenerStatus() == null || FallDetectionHandler.getListenerStatus() ==false ){

@@ -24,8 +24,12 @@
         <item>Πτωση</item>
         <item>Σεισμικη δραστηριοτητα</item>
         <item>Σεισμος</item>
+        <item>Φωτιά</item>
         <item>Εκτατη Αναγκη</item>
         <item>Ακυρωση Συναργεμου Εκτατης Αναγκης</item>
     </string-array>
     <string name="btn_fire">Φωτιά</string>
+    <string name="fire_title">Κίνδυνος Πυρκαγίας</string>
+    <string name="typeFire">Εκτατη Αναγκη Κίνδυνος Πυρκαγιάς</string>
+    <string name="helpMsgFire">Είμαι στη θέση με γεωγραφικό πλάτος %1 $s και γεωγραφικό μήκος %2 $s και παρακολουθώ μια πυρκαγιά που λαμβάνει χώρα. Χρόνος %3$s</string>
 </resources>

@@ -70,7 +70,11 @@ public class Statistics extends AppCompatActivity implements AdapterView.OnItemS
                 events = filterEvents("SOS");
                 System.out.println(events);
                 break;
-            case 5: //AbortSOS
+            case 5: //FIRE
+                events = filterEvents("FIRE");
+                System.out.println(events);
+                break;
+            case 6: //AbortSOS
                 events = filterEvents("AbortSOS");
                 System.out.println(events);
                 break;

@@ -25,7 +25,11 @@
         <item>Détection de tremblement de terre</item>
         <item>Tremblement de terre</item>
         <item>SOS</item>
+        <item>Feu</item>
         <item>Avorter SOS</item>
     </string-array>
     <string name="btn_fire">"Feu "</string>
+    <string name="fire_title">Incendie</string>
+    <string name="typeFire">Aide d\'urgence Risque d\'incendie</string>
+    <string name="helpMsgFire">Je suis à l\'emplacement avec la latitude %1$s et la longitude %2$s et je regarde un incendie qui se produit. Temps %3$s</string>
 </resources>

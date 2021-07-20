@@ -19,13 +19,17 @@
     <string name="i_lon">longitude: %1$s</string>
 
     <string-array name="statistics_events">
-        <item>Select event</item>
-        <item>Fall Detection</item>
-        <item>Earthquake Detection</item>
-        <item>Earthquake</item>
-        <item>SOS</item>
-        <item>Abort SOS</item>
+        <item>Available events</item>
+        <item>Fall Detection Events</item>
+        <item>Earthquake Detection Events</item>
+        <item>Earthquake Events</item>
+        <item>SOS Events</item>
+        <item>FIRE Events</item>
+        <item>Abort Events</item>
     </string-array>
     <string name="btn_fire">FIRE</string>
+    <string name="fire_title">Fire Hazard</string>
+    <string name="typeFire">Emergency Help Fire Hazard</string>
+    <string name="helpMsgFire">I am at location with latitude %1$s and longitude %2$s and I am watching a fire taking place. Time %3$s</string>
 
 </resources>

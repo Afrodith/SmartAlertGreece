@@ -92,7 +92,7 @@ public class FallDetectionHandler implements SensorEventListener {
             }
 
             if (moIsMin && moIsMax) {
-                Toast.makeText(mContext, "FALL DETECTED!!!!!", Toast.LENGTH_LONG).show(); //μηνυμα στον χρηστη toast message
+                Toast.makeText(mContext, "A fall has been detected!!", Toast.LENGTH_LONG).show(); //μηνυμα στον χρηστη toast message
                 i = 0;
                 moIsMin = false;
                 moIsMax = false;
