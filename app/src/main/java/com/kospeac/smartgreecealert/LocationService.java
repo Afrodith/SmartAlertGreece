@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 /*
-*  H Κλαση LocationService επιστρεφει τις συντεταγμενες της συσκευης του χρηστη με την χρηση του gps
+*  H  LocationService επιστρεφει τις συντεταγμενες της συσκευης του χρηστη με την χρηση του gps
 *  */
 public class LocationService implements LocationListener {
 static double latitude;
@@ -52,23 +52,7 @@ static double longitude;
 
     }
 
-//    static String getCity (){
-//        String cityName = null;
-//        Geocoder gcd = new Geocoder(MainActivity.mainActivity, Locale.getDefault());
-//        List<Address> addresses;
-//        try {
-//            addresses = gcd.getFromLocation(latitude,
-//                    longitude, 1);
-//            if (addresses.size() > 0) {
-//                cityName = addresses.get(0).getLocality();
-//            }
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return cityName;
-//    }
+
 
 
     /*

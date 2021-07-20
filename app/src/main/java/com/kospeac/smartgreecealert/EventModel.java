@@ -30,7 +30,7 @@ public class EventModel {
     /*
     * filterEarthquakeDetectionEvents
     * H στατικη μεθοδος δεχεται μια λιστα απο αντικειμενα EventModel
-    * και επιστρεφει λιστα απο events που εχουν type=earthquakeDetection
+    * και επιστρεφει λιστα απο events που εχουν type=earthquakeDetectionDetected
     * Χρησιμοποιειται για να φιλτραρει τα events  */
     public static List<EventModel> filterEarthquakeDetectionEvents(List<EventModel> eventModels){
         //Επιστρεφουμε μονο τα events που ειναι earthquakeDetection απο την λιστα

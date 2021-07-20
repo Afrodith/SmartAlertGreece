@@ -12,22 +12,13 @@ import android.widget.Toast;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/*
-* Interface  FallDetectionListener
-* με μεθοδο onStatusChanged
-* Γινεται override η μεθοδος στην main Activity και χρησιμοποιειται σαν listener οταν υπαρχει εντοπισμος πτωσης
-* */
+
 interface FallDetectionListener
 {
     public void onStatusChanged(boolean newStatus);
 }
 
-/*
-*  H Κλαση FallDetectionHandler διαχειριζεται τις καταστασεις του επιταχυνσιομετρου
-*  και επιστρεφει στην MainActivity status = true μεσω της μεθοδου onStatusChanged οταν
-*  υπαρχει εντοπισμος οτι ο χρηστης εχει πεσει κατω (fallDetection)
-*
-*   */
+
 public class FallDetectionHandler implements SensorEventListener {
     private String TAG = "FALL DETECTION HANDLER";
     private FallDetectionListener listener;
@@ -43,11 +34,11 @@ public class FallDetectionHandler implements SensorEventListener {
     public FallDetectionHandler(Context context) {
         mContext = context;
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER); // o sensor που θα χρησιμοποιηθει (TYPE_ACCELEROMETER)
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER); // sensor  (TYPE_ACCELEROMETER)
         registerListener();
     }
 
-    /* Εγγραφη του listener SensorEventListener (this) που κανει implement η κλαση  */
+
     public void registerListener(){
         status = true;
         mSensorManager.registerListener(this,mSensor,SensorManager.SENSOR_DELAY_NORMAL);
@@ -92,7 +83,7 @@ public class FallDetectionHandler implements SensorEventListener {
             }
 
             if (moIsMin && moIsMax) {
-                Toast.makeText(mContext, "A fall has been detected!!", Toast.LENGTH_LONG).show(); //μηνυμα στον χρηστη toast message
+                Toast.makeText(mContext, "A fall has been detected!!", Toast.LENGTH_LONG).show(); //toast message
                 i = 0;
                 moIsMin = false;
                 moIsMax = false;
@@ -113,9 +104,7 @@ public class FallDetectionHandler implements SensorEventListener {
 
     }
 
-    /* setFallDetection
-    * καλει την μεθοδο onStatusChanged που εχει υλοποιηθει στην MainActivity
-    */
+
     public void setFallDetection(boolean fallDetectionstatus){
         if(listener !=null){
             listener.onStatusChanged(fallDetectionstatus);
@@ -123,10 +112,7 @@ public class FallDetectionHandler implements SensorEventListener {
         }
     }
 
-    /* setFallDetectionListener
-     * Αποθηκευση του FallDetectionListener instance  (MainActivity) στα properties του αντικειμενου
-     * για να γινει χρηστη του απο την setFallDetection
-     */
+
     public void setFallDetectionListener(FallDetectionListener listener){
         this.listener = listener;
     }

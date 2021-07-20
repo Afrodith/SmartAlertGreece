@@ -58,22 +58,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LocationListener locationService;
     private Boolean prevStatus;
     Double longitude, latitude;
-    /* onCreate
-    * - Αρχικοποιηση αντικειμενων UI της Αρχικης οθονης (Main Activity)
-    * - Αρχικοποιηση επαφων για αποστολη με sms (οι οποιες αποθηκευονται σε sharedPreference)
-    * - Δημιουργια FirebaseService οπου θα χρησιμοποιηθει το ιδιο instance στην εφαρμογη
-    * - Δημιουργια device token συσκευης απο Firebase Messaging
-    * - Location Manager και δημιουργια αντικειμενου LocationService για την χρηση τοποθεσιας
-    * - Ελεγχος για permissions συσκευης
-    * - Εγγραφη του UsbService για την αναγνωριση της καταστασης USB
-    * */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainActivity = this;
         mFirebaseService = FirebaseService.getInstance();
-        mFirebaseService.getFCMToken(); // Γινεται generate FCM token απο την Firebase Messaging
+        mFirebaseService.getFCMToken(); //  generate FCM token - Firebase Messaging
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationService = new LocationService();
 
@@ -85,39 +77,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sosBtn.setOnClickListener(this);
         fireBtn.setOnClickListener(this);
         abortBtn.setOnClickListener(this);
-        checkPermissions(); //ελεγχος για permission συσκευης
+        checkPermissions();
 
-        try { //Δημιουργεια αντικειμενο Ringtone, επιλεγοντας το Notification ringtone της συσκευης
+        try {
             notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             r = RingtoneManager.getRingtone(getApplicationContext(), notification);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        /*
-         Κανουμε register to UsbService broadcast ωστε
-         να λαμβανουμε τα events οταν υπαρχει αλλαγη στην κατασταση του USB.
-         Σε καθε αλλαγη καταστασης επιστρεφεται απο την UsbService ενα boolean οπου
-         -true ειναι οτι η συσκευη ειναι συνδεδεμενη οποτε η λειτουργια που θα ακολουθησει θα ειναι η earthquakeDetection (εντοπισμος δονησεων)
-         -false η συσκευη δεν ειναι συνδεδεμενη οποτε η λειτουργια που θα ακολουθησει ειναι fallDetection (εντοπισμος πτωσεων χρηστη)
-        */
+
         this.registerReceiver(mUsbService,new IntentFilter("android.hardware.usb.action.USB_STATE"));
         mUsbService.setOnUsbServiceStatusListener(new OnUsbServiseStatusListener() {
             @Override
             public void onStatusChanged(boolean newStatus) {
                 if(newStatus){
-                    //κατασταση εντοπισμος σεισμου
-                    if(prevStatus == null || prevStatus != newStatus ) { //Ελεγχος της προηγουμενης καταστασης ετσι ωστε να μην γινει εγγραφη σε listener 2 φορες
+
+                    if(prevStatus == null || prevStatus != newStatus ) {
                         prevStatus = newStatus;
                         type = "earthquakeEventDetected";
-                        if (falldetection != null && FallDetectionHandler.getListenerStatus()) { // ελεγχος οτι αν υπαρχει ενεργος listener της αλλης λειτουργιας
-                            falldetection.unregisterListener(); // αμα υπαρχει γινεται unregister του listener ωστε να ειναι ενεργος μονο ενας listener καθε φορα αναλογα την λειτουργια
+                        if (falldetection != null && FallDetectionHandler.getListenerStatus()) {
+                            falldetection.unregisterListener();
                         }
-                        mainTitle.setText(R.string.main_title2); //αλλαγη του τιτλου της οθονης αναλογα την λειουτγια που εκτελειται
-                        setupEarthquakeDetection(); // Γινεται αρχικοποιηση της λειτουργιας EarthquakeDetection
+                        mainTitle.setText(R.string.main_title2);
+                        setupEarthquakeDetection(); // EarthquakeDetection
                     }
                 }else {
-                    //κατασταση εντοπισμος πτωσεων χρηστη
+
                     if(prevStatus == null || prevStatus != newStatus ) {
                         prevStatus = newStatus;
                         type = "fallDetectionEvent";
@@ -126,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             seismicdetection.unregisterListener();
                         }
                         mainTitle.setText(R.string.main_title1);
-                        setupFallDetection(); // Γινεται αρχικοποιηση της λειτουργιας FallDetection
+                        setupFallDetection(); //  FallDetection
                     }
                 }
             }
@@ -144,16 +130,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onDestroy();
     }
 
-    /*
-    * Click listener για τα κουμπια SOS και abort
-    * */
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.btn_sos: // κουμπι SOS
+            case R.id.btn_sos: //  SOS
                 sosStatus = true;
                 sosTitle.setText(R.string.sos_title);
-                countDownSOS =  new CountDownTimer(20000, 1000) { //timer στα 5 λεπτα ωστε να μπορει ο χρηστης να στειλει μηνυμα ακυρωσης μεσα σε αυτα τα λεπτα
+                countDownSOS =  new CountDownTimer(20000, 1000) {
                     public void onTick(long millisUntilFinished) {
                     }
                     public void onFinish() {
@@ -166,19 +150,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_fire: // FIRE button
                 sosTitle.setText(R.string.fire_title);
-               // countDownSOS =  new CountDownTimer(20000, 1000) { //timer στα 5 λεπτα ωστε να μπορει ο χρηστης να στειλει μηνυμα ακυρωσης μεσα σε αυτα τα λεπτα
-                 //   public void onTick(long millisUntilFinished) {
-                 //   }
-                   // public void onFinish() {
-                    //    sosTitle.setText("");
-                    //    sosStatus = false;
-                   // }
+                countDownSOS =  new CountDownTimer(20000, 1000) {
+                   public void onTick(long millisUntilFinished) {
+                    }
+                   public void onFinish() {
+                       sosTitle.setText("");
+                        sosStatus = false;
+                    }
 
-              //  }.start();
+                 }.start();
                 handleEvent("FIRE");
                 break;
             case R.id.btn_abort: // κουμπι Abort
-                if(type == "fallDetectionEvent" && countDownTimerIsRunning) { // σε περιπτωση που ο timer του fallDetection ειναι ενεργος τοτε το κουμπι abort ακυρωνει τον συναγερμο πτωσης
+                if(type == "fallDetectionEvent" && countDownTimerIsRunning) {
                     cancelTimer();
                     Toast.makeText(this, "Aborted", Toast.LENGTH_LONG).show();
                     mainTitle.setText(R.string.main_title1);
@@ -199,9 +183,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-    /*
-    * Clck listener απο το μενου της μπαρας
-    *  */
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -219,11 +201,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    /*
-    *  Η μεθοδος checkPermission αμα υπαρχουν τα απαραιτητα permissions που χρειαζεται η εφαρμογη
-    *  Η εφαρμογη χρειαζεται δυο permission για την τοποθεσια και για τη αποστολη SMS
-    *  Αμα δεν υπαρχει το permission τοτε το ζηταει απο τον χρηστη οταν ανοιγει την εφαρμογη
-    *  */
+
     private void checkPermissions() {
         List<String> PERMISSIONS = new ArrayList<>();
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -337,10 +315,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         countDownSOS.cancel();
     }
 
-    /* setupEarthquakeDetection
-     *  Δημιουργια αντικειμενου και listener (επιταχυνσιόμετρο συσκευης) οταν ειναι σε κατασταση seismicDetection
-     *  Οταν το status ειναι true τοτε υπαρχει εντοπισμος δονησης και γινεται απενεργοποιηση του listener
-     *    */
+    // setupEarthquakeDetection
+
     private void setupEarthquakeDetection() {
         seismicdetection = new SeismicDetectionHandler(this);
         seismicdetection.setSeismicDetectionListener(new SeismicDetectionListener() {
@@ -354,9 +330,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    /* handleEvent
-    * Διαχειριση των events για εγγραφη στην βαση και αποστολη sms
-    * Αναλογα το ειδος του event γινεται η καταλληλη ενεργεια */
+    // handleEvent
+
     private void handleEvent( String type){
         String eventType = type;
         final double latd,lond;

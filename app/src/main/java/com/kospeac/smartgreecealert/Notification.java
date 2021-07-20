@@ -52,9 +52,7 @@ public class Notification {
         Toast.makeText(mainActivity, msg, Toast.LENGTH_LONG).show();
     }
 
-    /* getMessage
-    *   Επιστροφη καταλληλου μηνυματος με βασει τον τυπο του event
-    *  */
+
     private String getMessage(String notificationType,String lat,String lon, String time){
         String type ="";
         if(notificationType == "SOS"){
@@ -76,9 +74,7 @@ public class Notification {
     }
 
 
-    /* getContacts
-        Επιστροφη των αποθηκευμενων επαφων απο την sharedPreference
-    * */
+
     private void getContacts(){
         SharedPreferences sharedPref = mainActivity.getPreferences(Context.MODE_PRIVATE);
         Set<String> numberList = new HashSet<String>();
@@ -90,26 +86,10 @@ public class Notification {
 
     }
 
-    /*
-    * setContacts
-    * Αποθηκευση αριθμων στην sharedPreference
-    * */
-//    static void setContacts(Activity activity){
-//        mainActivity = activity;
-//        Set<String> contacts = new HashSet<String>();
-//
-//        //Add the numbers to send the text message
-//        contacts.add("");
-//
-//        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPref.edit();
-//        editor.putStringSet("ContactNumbers", contacts);
-//        editor.apply();
-//    }
 
-    /* textToSpeech
-    * Εκφωνιση περιεχομενου μηνυματος
-    *  */
+
+    // textToSpeech
+
     private void textToSpeech(final String notificationType){
         final Handler handler = new Handler();
         tts = new Speech(mainActivity.getApplicationContext());
