@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Smart Greece Alert</string>
+    <string name="main_menu">Emergency Analytics</string>
+    <string name="main_menu_contacts">Emergency Contacts</string>
+    <string name="main_title1">Fall Detection</string>
+    <string name="main_title2">"Earthquake Detection "</string>
+    <string name="sos_title">SOS state</string>
+    <string name="btn_sos">SOS</string>
+    <string name="btn_abort">Abort</string>
+    <string name="typeFall">Emergency Fall</string>
+    <string name="typeSOS">Emergency Help</string>
+    <string name="typeAbort">False Alarm. Everything is fine.</string>
+    <string name="helpMsg">I am at location with latitude %1$s and longitude %2$s and I need help. Time %3$s</string>
+    <string name="abortMsg">Location with latitude %1$s and longitude %2$s. Time %3$s</string>
+    <string name="title_activity_statistics">Statistics</string>
+    <string name="statistics_count">Emergency Events : %1$s</string>
+    <string name="i_time">Date: %1$s</string>
+    <string name="i_lat">latitude: %1$s</string>
+    <string name="i_lon">longitude: %1$s</string>
+
+    <string-array name="statistics_events">
+        <item>Select event</item>
+        <item>Fall Detection</item>
+        <item>Earthquake Detection</item>
+        <item>Earthquake</item>
+        <item>SOS</item>
+        <item>Abort SOS</item>
+    </string-array>
+    <string name="btn_fire">FIRE</string>
+
+</resources>

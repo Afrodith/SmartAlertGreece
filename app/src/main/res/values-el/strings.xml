@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Smart Greece Alert</string>
+    <string name="main_menu">Αναλυτικά Στοιχεία</string>
+    <string name="main_menu_contacts">Επαφες Έκτακτης Ανάγκης</string>
+    <string name="main_title1">"Ανίχνευση πτώσης "</string>
+    <string name="main_title2">Ανίχνευση σεισμικής δραστηριότητας</string>
+    <string name="sos_title">Κατάσταση SOS</string>
+    <string name="btn_sos">SOS</string>
+    <string name="btn_abort">Ακυρωση</string>
+    <string name="typeFall">Βοηθεια πτωσης</string>
+    <string name="typeSOS">Εκτατη Αναγκη</string>
+    <string name="typeAbort">Άκυρος ο συναγερμός. Όλα καλά</string>
+    <string name="helpMsg">Βρίσκομαι στην τοποθεσια με γεωγραφικό μηκος %1$s και γεωγραφικό πλατος %2$s και χρειαζομαι βοηθεια. Ημερομηνία %3$s</string>
+    <string name="abortMsg">τοποθεσια με γεωγραφικό μηκος %1$s και γεωγραφικό πλατος %2$s. Ημερομηνία %3$s</string>
+    <string name="title_activity_statistics">Στατιστικα</string>
+    <string name="statistics_count">Αριθμός έκτακτων γενονότων : %1$s</string>
+    <string name="i_time">Ημερομηνία. : %1$s</string>
+    <string name="i_lat">Γεωγραφικό μηκος : %1$s</string>
+    <string name="i_lon">Γεωγραφικό πλατος: %1$s</string>
+
+    <string-array name="statistics_events">
+        <item>Επιλεξτε συμβαν</item>
+        <item>Πτωση</item>
+        <item>Σεισμικη δραστηριοτητα</item>
+        <item>Σεισμος</item>
+        <item>Εκτατη Αναγκη</item>
+        <item>Ακυρωση Συναργεμου Εκτατης Αναγκης</item>
+    </string-array>
+    <string name="btn_fire">Φωτιά</string>
+</resources>
